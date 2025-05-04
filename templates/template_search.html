@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ desc }}">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>{{ title }}</h1>
+    {% if desc %}
+      <p>{{ desc }}</p>
+    {% endif %}
+  </header>
+
+  <main>
+    <div class="search-bar">
+      <input id="search-input" type="text" placeholder="Search titles and descriptions..." autofocus>
+    </div>
+    <ul id="search-results"></ul>
+  </main>
+
+  <script>
+    async function fetchIndex() {
+      const res = await fetch("/search_index.json");
+      return await res.json();
+    }
+
+    function searchPages(pages, query) {
+      query = query.toLowerCase();
+      return pages.filter(page =>
+        (page.title && page.title.toLowerCase().includes(query)) ||
+        (page.desc && page.desc.toLowerCase().includes(query))
+      );
+    }
+
+    function renderResults(results) {
+      const ul = document.getElementById('search-results');
+      ul.innerHTML = "";
+      results.forEach(page => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${page.permalink}">${page.title}</a> - ${page.desc}`;
+        ul.appendChild(li);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const pages = await fetchIndex();
+      const input = document.getElementById('search-input');
+
+      input.addEventListener('input', () => {
+        const results = searchPages(pages, input.value);
+        renderResults(results);
+      });
+    });
+  </script>
+
+  <footer>
+    <p>Built with Tissue — Section: {{ section }}</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{% include "partial_header.html" %}
+
+</head>
+<body>
+  
+<header></header>
+
+<nav></nav>
+
+  <main>
+    <div class="container">
+
+        <h1>{{ title }}</h1>
+    {% if desc %}
+      <p>{{ desc }}</p>
+    {% endif %}
+
+
+         <div>{{ content }}</div> 
+  
+   
+
+
+
+
+
+      <h2>Other pages</h2>
+      <ul>
+        {% for p in all_pages %}
+          {% if p.permalink != permalink %}
+            <li><a href="{{ p.permalink }}">{{ p.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+ 
+</main>
+
+{% include "partial_footer.html" %}
+
+</body>
+</html>
+

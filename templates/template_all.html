@@ -1,0 +1,27 @@
+
+{% include "partial_header.html" %}
+<body>
+  <header></header>
+
+  <nav>
+    <div class="container">HOME</div>
+  </nav>
+
+  <main>
+    <div class="container">
+      B L O G S<br />
+      {% for p in all_pages %} {% if "blog" in p.groups %} -
+      <a href="{{ p.permalink }}">{{ p.title }}</a>
+      {% endif %} {% endfor %}
+    </div>
+
+    <div class="container">
+      <pre><code>{{ all_pages | tojson(indent=2) }}</code></pre>
+    </div>
+  </main>
+
+
+  {% include "partial_footer.html" %}
+</body>
+
+</html>
